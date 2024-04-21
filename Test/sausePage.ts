@@ -9,6 +9,8 @@ class sausePage extends Page {
     super(); // //3. Al of the defined methods and properties of the page
   }
 
+
+  
   // **** Page Objects *****
 
   // All the page objects will be the getter methods
