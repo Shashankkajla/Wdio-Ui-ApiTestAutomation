@@ -8,6 +8,7 @@ When(/^user perform MouseOver functions$/, async () => {
 await mouseFunction.perform_mouseOvr_ToClickElement();
 let eleIs = await mouseFunction.mouseOvr
 eleIs.scrollIntoView();
+console.log("Hello");
 
 
 });
