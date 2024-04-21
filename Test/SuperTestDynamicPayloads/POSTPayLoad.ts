@@ -62,6 +62,47 @@ async readJSONFile(filelocation){
 
 }
 
+
+async writeGetRequestToJSONFile(filelocation: string, result_object){
+
+
+    let writeToFile_getCall = util.promisify(fs.writeFile)
+
+    try{
+
+         await writeToFile_getCall(filelocation, result_object) // JSON.stringify(result_object, null, 2) 
+         // as its an object so to pass it using JSON stringify alwz.
+        console.log("GET File saved successfully at:", filelocation);
+    }
+    catch(err){
+      console.log(`File Error GET To write in File: ${err}`);
+    }
+
+
+}
+
+
+async writeJSOnDataToPutFile(filelocation, fileData){
+
+  let writeToPut =  util.promisify(fs.writeFile)
+  try{
+ 
+    let jsonObject = JSON.parse(fileData)
+    await writeToPut(filelocation, jsonObject)
+    console.log(`Data Added to PUt File : ${filelocation}`);
+  }
+  catch(err){
+    console.log(`File Error : ${err}`);
+
+  }
+
+}
+
+//const jsonObject = JSON.parse(jsonString);
+
+// Write the JSON object to a JSON file
+//fs.writeFileSync('output.json', JSON.stringify(jsonObject, null, 2));
+
 }
 
 

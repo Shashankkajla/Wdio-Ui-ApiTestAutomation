@@ -8,6 +8,8 @@ let postLocn
 let base_Uri
 let post_endPint
 let responseIs
+let  get_response
+//let put_request
 
 
 Given(/^user details to create a new dynamic payload and postPayloadLocn$/, () => {
@@ -79,6 +81,128 @@ Then(/^validate the status code of the POST call 201$/, () => {
 
 
 });
+
+
+Then(/^perform  GET Operation on given path$/, () => {
+
+    get_response = apiJson.getCall(base_Uri, post_endPint)
+
+   console.log(typeof get_response);
+   
+   get_response.then((result)=>{
+
+    console.log(result?.status);
+    console.log(result?.body);
+    //chai.expect(result?.status).to.equal(parseInt("200"))
+
+   })
+
+   .catch((err)=>{
+    console.log(`GET Call Error : ${err}`);
+   })
+    
+
+});
+
+Then(/^validate the status code of the POST call 200$/, () => {
+    let fileLocation = 'Test/RestApiJSON/GETCall.json'
+
+    get_response.then((result)=>{
+    chai.expect(result?.status).to.equal(parseInt("200"))
+
+    postPayLoad.writeGetRequestToJSONFile(fileLocation, JSON.stringify(result?.body, null, 2)) // relative path, result)
+
+    // Now Perform chai validation Accordingly ::
+    // you can did it from file or from result? as well most prefer is using result way
+    
+     console.log(`${result?.body[1].email}`);
+      
+     if(!result?.body[1].email){
+
+        chai.expect(result?.body[1].email).to.equal("raman@way2automation.com")
+     //   chai.expect(result.body[1]).to.deep.equal({ "id": 2, "email": "raman@way2automation.com", "firstName": "Raman", "lastName": "Ar" });
+
+
+     }
+
+
+       })
+    
+       .catch((err)=>{
+        console.log(`GET Call Error : ${err}`);
+       })
+    
+});
+
+
+Then(/^perform put call on the created post to update the data$/, () => {
+    let put_FileLocation = 'Test/RestApiJSON/PutCall.json'
+  
+    /** 
+  
+    let post_locn = 'Test/RestApiJSON/PostCall.json' // use Relative Path
+    let put_FileLocation = 'Test/RestApiJSON/PutCall.json'
+    let resultIs
+
+    postPayLoad.saveToFile(post_locn) // relative path
+
+    let readPostData = postPayLoad.readJSONFile(post_locn)
+
+
+    readPostData.then((result)=>{
+       // console.log(`PUT Payload is : ${JSON.stringify(result, null, 2)}`);
+        // Here POST PayLoad Readed 
+        //result.replace(/\n/g, "").replace(/ /g, "");
+         resultIs=result
+        postPayLoad.writeJSOnDataToPutFile(put_FileLocation, JSON.stringify(resultIs, null, 2))
+        // /-> To start regular expression , /n - removed the blank spaces, /g - global search
+       //JSON.stringify(result?.replace(/\n/g, "").replace(/ /g, ""), null, 2))
+    })
+
+    .catch((err)=>{
+        console.log(`POST PayLoad Readed Error : ${err}`);
+    })
+
+    */
+
+     //Need to use promise to print ::  console.log(` PUT File Status :: ${JSON.stringify(resultIs)}`);
+
+
+
+     //Now use PUT call
+     let read_put : Promise<string | null> =postPayLoad.readJSONFile(put_FileLocation)
+
+     read_put.then((result)=>{
+
+        console.log(`PUT Response is : ${result}`);
+
+     })
+            
+     .catch((err)=>{
+
+        console.log(`Error Put : ${err}`);
+     })
+
+     let res =apiJson.putCall(base_Uri, post_endPint, read_put)
+
+     res.then((result)=>{
+
+        console.log(result?.status);
+     })
+
+     
+
+
+
+
+
+
+});
+
+Then(/^check the status code of the PUT is 201$/, () => {
+});
+
+
 
 
 
